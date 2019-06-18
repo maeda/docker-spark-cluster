@@ -57,6 +57,9 @@ RUN echo "export SPARK_DIST_CLASSPATH=\$(hadoop classpath)" >> /home/hadoop/.bas
 RUN echo "export SPARK_DIST_CLASSPATH=\$(hadoop classpath)" >> /home/hadoop/.profile
 RUN echo "export SPARK_HOME=/home/hadoop/spark" >> /home/hadoop/.profile
 RUN echo "export SPARK_HOME=/home/hadoop/spark" >> /home/hadoop/.bashrc
+RUN echo "export SPARK_HISTORY_OPTS=\"$SPARK_HISTORY_OPTS -Dspark.history.fs.logDirectory=hdfs://nodemaster:9000/tmp/spark-events\"" >> /home/hadoop/.profile
+RUN echo "export SPARK_HISTORY_OPTS=\"$SPARK_HISTORY_OPTS -Dspark.history.fs.logDirectory=hdfs://nodemaster:9000/tmp/spark-events\"" >> /home/hadoop/.bashrc
+
 COPY --chown=hadoop config/workers /home/hadoop/spark/conf/slaves
 COPY --chown=hadoop config/sparkcmd.sh /home/hadoop/
 #RUN chown hadoop /home/hadoop/*
@@ -64,5 +67,6 @@ COPY --chown=hadoop config/sparkcmd.sh /home/hadoop/
 COPY --chown=hadoop config/core-site.xml config/hdfs-site.xml config/mapred-site.xml config/yarn-site.xml config/workers /home/hadoop/hadoop/etc/hadoop/
 #RUN chown hadoop /home/hadoop/hadoop/etc/hadoop/*
 USER root
+RUN ln -s $(which java) /bin/java
 #ENTRYPOINT ["/home/hadoop/sparkcmd.sh","start"]
 CMD service ssh start && sleep infinity
