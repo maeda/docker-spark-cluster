@@ -36,7 +36,7 @@ if [[ $1 = "stop" ]]; then
   docker exec -u hadoop -d node2 /home/hadoop/sparkcmd.sh stop
   docker exec -u hadoop -d node3 /home/hadoop/sparkcmd.sh stop
   docker exec -u hadoop -d node4 /home/hadoop/sparkcmd.sh stop
-  docker stop nodemaster node2 node3 node4
+  docker stop nodemaster node2 node3 #node4
   exit
 fi
 
@@ -58,6 +58,8 @@ if [[ $1 = "deploy" ]]; then
   startServices
   echo ">> Setting up spark-ui log directory..."
   docker exec -u hadoop -it nodemaster hadoop/bin/hadoop fs -mkdir -p hdfs://nodemaster:9000/tmp/spark-events
+  echo ">> Setting up hdfs hadoop user folder"
+  docker exec -u hadoop -it nodemaster hadoop/bin/hadoop fs -mkdir -p hdfs://nodemaster:9000/user/hadoop
   exit
 fi
 
