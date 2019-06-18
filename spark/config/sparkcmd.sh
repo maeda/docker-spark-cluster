@@ -12,6 +12,7 @@ sleep 5
 if [[ $1 = "start" ]]; then
   if [[ $HOSTNAME = "nodemaster" ]]; then
      /home/hadoop/spark/sbin/start-master.sh
+     /home/hadoop/spark/sbin/start-history-server.sh
      sleep infinity
      exit
   fi

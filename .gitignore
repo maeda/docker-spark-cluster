@@ -1,2 +1,3 @@
 hadoop/deps/*
 /hadoop/config/id_rsa*
+spark/config/id_rsa*

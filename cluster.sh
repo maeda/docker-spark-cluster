@@ -22,6 +22,7 @@ function show_info {
   masterIp=`docker inspect -f "{{ .NetworkSettings.Networks.sparknet.IPAddress }}" nodemaster`
   echo "Hadoop info @ nodemaster: http://$masterIp:8088/cluster"
   echo "Spark info @ nodemater  : http://$masterIp:8080/"
+  echo "Spark-UI @ nodemater : http://$masterIp:18080/"
   echo "DFS Health @ nodemaster : http://$masterIp:9870/dfshealth.html"
 }
 
@@ -55,6 +56,8 @@ if [[ $1 = "deploy" ]]; then
   echo ">> Formatting hdfs ..."
   docker exec -u hadoop -it nodemaster hadoop/bin/hdfs namenode -format
   startServices
+  echo ">> Setting up spark-ui log directory..."
+  docker exec -u hadoop -it nodemaster hadoop/bin/hadoop fs -mkdir -p hdfs://nodemaster:9000/tmp/spark-events
   exit
 fi
 
